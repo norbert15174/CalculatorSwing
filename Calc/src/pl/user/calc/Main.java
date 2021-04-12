@@ -1,9 +1,7 @@
-package pl.user.calendar;
+package pl.user.calc;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Main {
 
