@@ -9,7 +9,12 @@ public class CalcEventListener implements java.awt.event.ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         Pattern pattern = Pattern.compile("[0-9]");
         String actionValue = actionEvent.getActionCommand();
-        if(actionValue.matches("[.]")){
+        if( actionValue.matches("INV")){
+            if(GUI.jTextField.getText().charAt(0) == '-')
+                GUI.jTextField.setText(GUI.jTextField.getText().substring(1));
+            else
+                GUI.jTextField.setText("-" + GUI.jTextField.getText());
+        }else if(actionValue.matches("[.]")){
             if(!Pattern.compile("\\d+[.]\\d.*").matcher(GUI.jTextField.getText()).matches()){
                 GUI.jTextField.setText(GUI.jTextField.getText() + actionValue);
             }
@@ -44,7 +49,6 @@ public class CalcEventListener implements java.awt.event.ActionListener {
                 }
             }else {
                     CalcValue.calcResult(actionValue);
-
             }
         }
 

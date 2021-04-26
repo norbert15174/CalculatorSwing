@@ -32,28 +32,34 @@ public class CalcValue {
     public static void calcResult(String value) {
         Double firstValue = Double.parseDouble(GUI.savedValue);
         Double secondValue = Double.parseDouble(GUI.jTextField.getText());
-        switch (value){
-            case "+":
-                addValue(firstValue,secondValue);
-                break;
-            case "-":
-                subtractValue(firstValue,secondValue);
-                break;
-            case "/":
-                divideValue(firstValue,secondValue);
-                break;
-            case "x":
-                multiplyValue(firstValue,secondValue);
-                break;
-            case "%":
-                modValue(firstValue,secondValue);
-                break;
-            case "=":
+        String val = GUI.lastOperationValue;
+        if(value.matches("=")){
                 checkOperation(firstValue,secondValue);
-                break;
-            default:
-                break;
+        }else{
+            switch (val){
+                case "+":
+                    addValue(firstValue,secondValue);
+                    break;
+                case "-":
+                    subtractValue(firstValue,secondValue);
+                    break;
+                case "/":
+                    divideValue(firstValue,secondValue);
+                    break;
+                case "x":
+                    multiplyValue(firstValue,secondValue);
+                    break;
+                case "%":
+                    modValue(firstValue,secondValue);
+                    break;
+                case "=":
+                    addValue(firstValue,0.0);
+                    break;
+                default:
+                    break;
+            }
         }
+        GUI.lastOperationValue = value;
     }
 
     public static void checkOperation(Double first, Double second){

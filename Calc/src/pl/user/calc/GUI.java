@@ -7,7 +7,7 @@ public class GUI {
     public static JFrame jf = new JFrame("My First Frame");
     public static JTextField jTextField = new JTextField();
     public static String lastOperationValue = "no";
-    public static String savedValue;
+    public static String savedValue = "0";
 
 
     public static JButton createButton(String name){
@@ -40,7 +40,7 @@ public class GUI {
         createJTextField();
 
 
-        String[] keyTab = {"/","%","C","DEL","9","8","7","x","6","5","4","-","3","2","1","+","+/-","0",".","="};
+        String[] keyTab = {"/","%","C","DEL","9","8","7","x","6","5","4","-","3","2","1","+","INV","0",".","="};
         for(String s : keyTab) jPanel.add(createButton(s));
 
         jf.getContentPane().add(jTextField,BorderLayout.NORTH);
