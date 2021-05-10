@@ -20,7 +20,7 @@ public class CalcValue {
     }
     public static void divideValue(Double first, Double second){
         GUI.lastOperationValue = "/";
-        GUI.savedValue = String.valueOf(first*second);
+        GUI.savedValue = String.valueOf(first/second);
         GUI.jTextField.setText("0");
     }
     public static void modValue(Double first, Double second){
@@ -74,8 +74,12 @@ public class CalcValue {
                 setValue(v);
                 break;
             case "/":
-                v = first/second;
-                setValue(v);
+                if(second == 0){
+                    setNan();
+                } else {
+                    v = first/second;
+                    setValue(v);
+                }
                 break;
             case "x":
                 v = first*second;
@@ -88,6 +92,7 @@ public class CalcValue {
             case "=":
                 v = 2*first;
                 setValue(v);
+                break;
             default:
                 break;
         }
@@ -102,6 +107,11 @@ public class CalcValue {
             GUI.savedValue = numberFormat.format(v);
         }
         GUI.jTextField.setText(GUI.savedValue);
+        GUI.lastOperationValue = "no";
+    }
+    public static void setNan(){
+        GUI.savedValue = "0";
+        GUI.jTextField.setText("NAN");
         GUI.lastOperationValue = "no";
     }
 }

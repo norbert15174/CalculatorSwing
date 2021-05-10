@@ -2,12 +2,14 @@ package pl.user.calc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 public class GUI {
-    public static JFrame jf = new JFrame("My First Frame");
+    public static JFrame jf = new JFrame("Calculator");
     public static JTextField jTextField = new JTextField();
     public static String lastOperationValue = "no";
     public static String savedValue = "0";
+
 
 
     public static JButton createButton(String name){
@@ -15,6 +17,11 @@ public class GUI {
         jb.setBackground(new Color(52, 52, 46));
         jb.setFont(new Font("Serif", Font.PLAIN, 20));
         jb.setForeground(Color.orange);
+        if(Pattern.compile("^[0-9 | INV | . | x | \\- | +]").matcher(name).matches()){
+            jb.setBackground(Color.orange);
+            jb.setForeground(Color.decode("#2e2d2d"));
+            jb.setFont(new Font("Serif", Font.PLAIN, 22));
+        }
         jb.setBorder(BorderFactory.createLineBorder(Color.decode("#2e2d2d")));
         jb.setPreferredSize(new Dimension(100, 100));
         jb.addActionListener(new CalcEventListener());
