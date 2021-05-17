@@ -24,12 +24,16 @@ public class CalcValue {
 
         Double val2 = Double.parseDouble(value);
         Double val1 = Double.parseDouble(GUI.lastValue);
-        System.out.println("val2" + val2);
-        System.out.println("val2" + val1);
-        displayValue(val1/val2);
-        GUI.lastValue = String.valueOf(val1/val2);
-        GUI.lastOperation = "/";
-        GUI.operation = true;
+
+        if(val2 == 0) {
+            GUI.jTextField.setText("NAN");
+        }else {
+            displayValue(val1/val2);
+            GUI.lastValue = String.valueOf(val1/val2);
+            GUI.lastOperation = "/";
+            GUI.operation = true;
+        }
+
     }
     public static void multiplyValues(String value){
         Double val2 = Double.parseDouble(value);

@@ -13,7 +13,11 @@ public class CalcEventListener implements java.awt.event.ActionListener {
         String actionValue = actionEvent.getActionCommand();
         Pattern pattern = Pattern.compile("[0-9]");
         String currentValue = GUI.jTextField.getText();
-            if(actionValue.matches("C")){
+            if(currentValue.matches("NAN")){
+                if(actionValue.matches("C")){
+                    clear();
+                }
+            }else if(actionValue.matches("C")){
                 clear();
             }else {
                 if ( pattern.matcher(actionValue).matches() ) {
