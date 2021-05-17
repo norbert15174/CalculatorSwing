@@ -5,69 +5,133 @@ import java.awt.event.ActionEvent;
 import java.util.regex.Pattern;
 
 public class CalcEventListener implements java.awt.event.ActionListener {
+
+    public static int checkIfOk = 0;
+    public static int equals = 0;
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if(GUI.jTextField.getText().matches("NAN")){
-            String actionValue = actionEvent.getActionCommand();
+        String actionValue = actionEvent.getActionCommand();
+        Pattern pattern = Pattern.compile("[0-9]");
+        String currentValue = GUI.jTextField.getText();
             if(actionValue.matches("C")){
-                GUI.lastOperationValue = "no";
-                GUI.savedValue = "0";
-                GUI.jTextField.setText("0");
-            }
-        }else{
-            Pattern pattern = Pattern.compile("[0-9]");
-            String actionValue = actionEvent.getActionCommand();
-            if( actionValue.matches("INV")){
-                if(GUI.jTextField.getText().charAt(0) == '-')
-                    GUI.jTextField.setText(GUI.jTextField.getText().substring(1));
-                else
-                    GUI.jTextField.setText("-" + GUI.jTextField.getText());
-            }else if(actionValue.matches("[.]")){
-                if(!Pattern.compile("\\d+[.]\\d*").matcher(GUI.jTextField.getText()).matches()){
-                    GUI.jTextField.setText(GUI.jTextField.getText() + actionValue);
-                }
-            }else if(pattern.matcher(actionEvent.getActionCommand()).matches()){
-                if(GUI.lastOperationValue.matches("=")){
-                    GUI.lastOperationValue = "no";
-                    GUI.savedValue = "0";
-                    GUI.jTextField.setText("0");
-                }
-                if(GUI.jTextField.getText().matches("0")){
-                    GUI.jTextField.setText(actionValue);
-                }else{
-                    GUI.jTextField.setText(GUI.jTextField.getText() + actionValue);
-                }
-            }else{
-                if(actionValue.matches("C")){
-                    GUI.lastOperationValue = "no";
-                    GUI.savedValue = "0";
-                    GUI.jTextField.setText("0");
-                }else if(actionValue.matches("DEL") && !GUI.jTextField.getText().matches("0")){
-
-                        if ( GUI.jTextField.getText().matches("[0-9]") ) {
-                            GUI.jTextField.setText("0");
+                clear();
+            }else {
+                if ( pattern.matcher(actionValue).matches() ) {
+                    checkIfOk = 0;
+                    if(equals != 0) clear();
+                    if ( GUI.operation == true ) {
+                        GUI.jTextField.setText(actionValue);
+                        GUI.operation = false;
+                    } else {
+                        if ( GUI.jTextField.getText().matches("0") ) {
+                            GUI.jTextField.setText(actionValue);
                         } else {
-                            try {
-                                GUI.jTextField.setText(GUI.jTextField.getText(0 , GUI.jTextField.getText().length() - 1));
-                            } catch ( BadLocationException e ) {
-                                e.printStackTrace();
+                            GUI.jTextField.setText(currentValue + actionValue);
+                        }
+                    }
+                }else if(actionValue.matches("[.]")){
+                    checkIfOk = 0;
+                    Pattern patternDot = Pattern.compile("\\d+");
+                    if(patternDot.matcher(currentValue).matches()){
+                        GUI.jTextField.setText(currentValue + actionValue);
+                    }
+                }else if(actionValue.matches("INV")){
+                    if(Double.parseDouble(GUI.lastValue) == Double.parseDouble(currentValue)){
+                        GUI.lastValue = String.valueOf(0 - Double.parseDouble(currentValue));
+                        CalcValue.displayValue(0 - Double.parseDouble(currentValue));
+                    }else if(checkIfOk==0){
+                        CalcValue.displayValue(0 - Double.parseDouble(currentValue));
+                    }else {
+                        GUI.lastValue = String.valueOf(0 - Double.parseDouble(currentValue));
+                        CalcValue.displayValue(0 - Double.parseDouble(currentValue));
+                    }
+                }else if(actionValue.matches("DEL")){
+                    if(currentValue.length()>1) {
+                        GUI.jTextField.setText(currentValue.substring(0,currentValue.length()-1));
+                        if(checkIfOk!=0){
+                            GUI.lastValue = currentValue.substring(0,currentValue.length()-1);
+                        }
+                    }else if(currentValue.length()==1){
+                        GUI.jTextField.setText("0");
+                        if(checkIfOk!=0){
+                            GUI.lastValue = "0";
+                        }
+                    }
+                }else{
+                    if(GUI.lastOperation.matches("no")){
+                        GUI.lastValue = currentValue;
+                        GUI.lastOperation = actionValue;
+                        GUI.operation = true;
+                        GUI.operValue = currentValue;
+                        checkIfOk=1;
+                    }else if(actionValue.matches("=")){
+                        if(equals == 0){
+                            GUI.operValue = currentValue;
+                            checkIfOk++;
+                        }
+                        equals++;
+                        switch (GUI.lastOperation){
+                            case "+":
+                                CalcValue.addValues(GUI.operValue);
+                                break;
+                            case "-":
+                                CalcValue.subtractValues(GUI.operValue);
+                                break;
+                            case "x":
+                                CalcValue.multiplyValues(GUI.operValue);
+                                break;
+                            case "/":
+                                CalcValue.divideValues(GUI.operValue);
+                                break;
+                            case "%":
+                                CalcValue.moduloValues(GUI.operValue);
+                                break;
+                        }
+                    }else{
+                        if(equals!=0){
+                            equals = 0;
+                            GUI.lastOperation = actionValue;
+                            checkIfOk = 1;
+                        }else{
+                            if(checkIfOk == 0){
+                                switch (GUI.lastOperation){
+                                    case "+":
+                                        CalcValue.addValues(currentValue);
+                                        break;
+                                    case "-":
+                                        CalcValue.subtractValues(currentValue);
+                                        break;
+                                    case "x":
+                                        CalcValue.multiplyValues(currentValue);
+                                        break;
+                                    case "/":
+                                        CalcValue.divideValues(currentValue);
+                                        break;
+                                    case "%":
+                                        CalcValue.moduloValues(currentValue);
+                                        break;
+                                }
+                                GUI.lastOperation = actionValue;
+                                GUI.operValue = currentValue;
+                                checkIfOk++;
+                                equals = 0;
+                            }else{
+                                GUI.lastOperation = actionValue;
                             }
                         }
-
-                }else if(GUI.lastOperationValue.matches("no")){
-                    if(actionValue.matches("=")){
-                        GUI.jTextField.setText(String.valueOf(Long.parseLong(GUI.jTextField.getText()) * 2));
-                    }else {
-                        GUI.savedValue = GUI.jTextField.getText();
-                        GUI.lastOperationValue = actionValue;
-                        GUI.jTextField.setText("0");
                     }
-                }else {
-                    CalcValue.calcResult(actionValue);
-                }
+
+
             }
         }
 
-
+    }
+    public static void clear(){
+        checkIfOk = 0;
+        GUI.jTextField.setText("0");
+        GUI.lastValue = "0";
+        GUI.lastOperation = "no";
+        GUI.operation = false;
+        equals = 0;
     }
 }

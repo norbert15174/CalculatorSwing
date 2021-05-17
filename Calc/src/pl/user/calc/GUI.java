@@ -7,8 +7,13 @@ import java.util.regex.Pattern;
 public class GUI {
     public static JFrame jf = new JFrame("Calculator");
     public static JTextField jTextField = new JTextField();
-    public static String lastOperationValue = "no";
-    public static String savedValue = "0";
+    public static String lastValue = "0";
+    public static String lastOperation = "no";
+    public static String operValue = "0";
+    public static boolean operation = false;
+    public static boolean afterEqual = true;
+
+
 
 
 

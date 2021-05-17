@@ -3,115 +3,59 @@ package pl.user.calc;
 import java.text.DecimalFormat;
 
 public class CalcValue {
-    public static void addValue(Double first, Double second){
-        GUI.lastOperationValue = "+";
-        GUI.savedValue = String.valueOf(first+second);
-        GUI.jTextField.setText("0");
+
+    public static void addValues(String value){
+        Double val2 = Double.parseDouble(value);
+        Double val1 = Double.parseDouble(GUI.lastValue);
+        displayValue(val1+val2);
+        GUI.lastValue = String.valueOf(val1+val2);
+        GUI.lastOperation = "+";
+        GUI.operation = true;
     }
-    public static void subtractValue(Double first, Double second){
-        GUI.lastOperationValue = "-";
-        GUI.savedValue = String.valueOf(first-second);
-        GUI.jTextField.setText("0");
+    public static void subtractValues(String value){
+        Double val2 = Double.parseDouble(value);
+        Double val1 = Double.parseDouble(GUI.lastValue);
+        displayValue(val1-val2);
+        GUI.lastValue = String.valueOf(val1-val2);
+        GUI.lastOperation = "-";
+        GUI.operation = true;
     }
-    public static void multiplyValue(Double first, Double second){
-        GUI.lastOperationValue = "x";
-        GUI.savedValue = String.valueOf(first*second);
-        GUI.jTextField.setText("0");
+    public static void divideValues(String value){
+
+        Double val2 = Double.parseDouble(value);
+        Double val1 = Double.parseDouble(GUI.lastValue);
+        System.out.println("val2" + val2);
+        System.out.println("val2" + val1);
+        displayValue(val1/val2);
+        GUI.lastValue = String.valueOf(val1/val2);
+        GUI.lastOperation = "/";
+        GUI.operation = true;
     }
-    public static void divideValue(Double first, Double second){
-        GUI.lastOperationValue = "/";
-        GUI.savedValue = String.valueOf(first/second);
-        GUI.jTextField.setText("0");
+    public static void multiplyValues(String value){
+        Double val2 = Double.parseDouble(value);
+        Double val1 = Double.parseDouble(GUI.lastValue);
+        displayValue(val1*val2);
+        GUI.lastValue = String.valueOf(val1*val2);
+        GUI.lastOperation = "x";
+        GUI.operation = true;
     }
-    public static void modValue(Double first, Double second){
-        GUI.lastOperationValue = "%";
-        GUI.savedValue = String.valueOf(first%second);
-        GUI.jTextField.setText("0");
+    public static void moduloValues(String value){
+        Double val2 = Double.parseDouble(value);
+        Double val1 = Double.parseDouble(GUI.lastValue);
+        displayValue(val1%val2);
+        GUI.lastValue = String.valueOf(val1%val2);
+        GUI.lastOperation = "%";
+        GUI.operation = true;
     }
 
-    public static void calcResult(String value) {
-        Double firstValue = Double.parseDouble(GUI.savedValue);
-        Double secondValue = Double.parseDouble(GUI.jTextField.getText());
-        String val = GUI.lastOperationValue;
-        if(value.matches("=")){
-                checkOperation(firstValue,secondValue);
+    public static void displayValue(double val){
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00000");
+        if(Math.round(val) == val){
+            GUI.jTextField.setText(String.valueOf(Math.round(val)));
         }else{
-            switch (val){
-                case "+":
-                    addValue(firstValue,secondValue);
-                    break;
-                case "-":
-                    subtractValue(firstValue,secondValue);
-                    break;
-                case "/":
-                    divideValue(firstValue,secondValue);
-                    break;
-                case "x":
-                    multiplyValue(firstValue,secondValue);
-                    break;
-                case "%":
-                    modValue(firstValue,secondValue);
-                    break;
-                case "=":
-                    addValue(firstValue,0.0);
-                    break;
-                default:
-                    break;
-            }
-        }
-        GUI.lastOperationValue = value;
-    }
-
-    public static void checkOperation(Double first, Double second){
-        double v;
-        switch (GUI.lastOperationValue){
-            case "+":
-                v = first+second;
-                setValue(v);
-                break;
-            case "-":
-                v = first-second;
-                setValue(v);
-                break;
-            case "/":
-                if(second == 0){
-                    setNan();
-                } else {
-                    v = first/second;
-                    setValue(v);
-                }
-                break;
-            case "x":
-                v = first*second;
-                setValue(v);
-                break;
-            case "%":
-                v = first%second;
-                setValue(v);
-                break;
-            case "=":
-                v = 2*first;
-                setValue(v);
-                break;
-            default:
-                break;
+            GUI.jTextField.setText(String.valueOf(decimalFormat.format(val)));
         }
 
+    }
 
-    }
-    public static void setValue(Double v){
-        if(v.longValue() == v){
-            GUI.savedValue = String.valueOf(v.longValue());
-        }else{
-            DecimalFormat numberFormat = new DecimalFormat("#0.0000");
-            GUI.savedValue = numberFormat.format(v);
-        }
-        GUI.jTextField.setText(GUI.savedValue);
-        GUI.lastOperationValue = "no";
-    }
-    public static void setNan(){
-        GUI.savedValue = "0";
-        GUI.jTextField.setText("NAN");
-        GUI.lastOperationValue = "no";
-    }
 }
