@@ -16,6 +16,10 @@ public class CalcEventListener implements java.awt.event.ActionListener {
             if(currentValue.matches("NAN")){
                 if(actionValue.matches("C")){
                     clear();
+                }else if( pattern.matcher(actionValue).matches()){
+                    clear();
+                    GUI.jTextField.setText(actionValue);
+                    GUI.operation = false;
                 }
             }else if(actionValue.matches("C")){
                 clear();
