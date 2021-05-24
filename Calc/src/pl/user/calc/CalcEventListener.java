@@ -5,14 +5,21 @@ import java.awt.event.ActionEvent;
 import java.util.regex.Pattern;
 
 public class CalcEventListener implements java.awt.event.ActionListener {
-
     public static int checkIfOk = 0;
     public static int equals = 0;
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
         String actionValue = actionEvent.getActionCommand();
+
+
         Pattern pattern = Pattern.compile("[0-9]");
         String currentValue = GUI.jTextField.getText();
+        //if doesn't work well, just delete
+        if(GUI.lastOperation.matches("=") && pattern.matcher(actionValue).matches()){
+            clear();
+        }
             if(currentValue.matches("NAN")){
                 if(actionValue.matches("C")){
                     clear();
